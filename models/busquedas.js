@@ -30,8 +30,14 @@ class Busquedas {
         const resp = await instance.get();
 
         // const resp = await axios.get("https://api.mapbox.com/geocoding/v5/mapbox.places/barranquilla.json?proximity=ip&language=es&access_token=pk.eyJ1IjoianVsc2tkaiIsImEiOiJjbGw0OTVsbTkwMzhzM2x0MGV5d2g0cDF3In0.hWSnzM7JbOhxfusA9dnzzg");
-        console.log(resp.data);
-        return []; //Retornar los lugares
+
+        return resp.data.features.map(lugar => ({
+            id: lugar.id,
+            nombre: lugar.place_name,
+            lng: lugar.center[0],
+            lat: lugar.center[1]
+        }))
+        ; //Retornar los lugares
     } catch (error) {
         // console.log()
         return []; //Retornar los lugares
