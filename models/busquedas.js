@@ -7,6 +7,17 @@ class Busquedas {
 
   constructor() {
     //TODO: leer DB si existe
+    this.leerDB()
+  }
+
+  get historialCapitalizado(){
+    return this.historial.map((lugar) => {
+
+        let palabras = lugar.split(' ');
+        palabras = palabras.map(p => p[0].toUpperCase() + p.substring(1))
+
+        return palabras.join(' ')
+    })
   }
 
   get paramsMapbox() {
@@ -88,6 +99,8 @@ class Busquedas {
         return
       }
 
+      this.historial = this.historial.splice(0,5)
+
       this.historial.unshift(lugar.toLocaleLowerCase())
 
       //TODO Grabar en DB
@@ -105,8 +118,14 @@ class Busquedas {
   }
 
   leerDB(){
+    const info = fs.readFileSync(this.dbPath)
+
+    const data = JSON.parse(info)
+
+    this.historial = data.historial
 
   }
+  
 }
 
 module.exports = Busquedas;
